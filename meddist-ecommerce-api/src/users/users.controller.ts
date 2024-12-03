@@ -1,0 +1,54 @@
+// src/users/users.controller.ts
+import {
+  Controller,
+  Get,
+  Post,
+  Patch,
+  Param,
+  Body,
+  HttpCode,
+  HttpStatus,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
+import { UsersService } from './users.service';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+
+@Controller('users')
+export class UsersController {
+  constructor(private readonly usersService: UsersService) {}
+
+  @Post('register')
+  @HttpCode(HttpStatus.CREATED)
+  @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
+  async register(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.create(
+      createUserDto.email,
+      createUserDto.password,
+    );
+  }
+
+  @Get(':id')
+  async getUserById(@Param('id') id: string) {
+    return this.usersService.findById(id);
+  }
+
+  @Get('email/:email')
+  async getUserByEmail(@Param('email') email: string) {
+    return this.usersService.findByEmail(email);
+  }
+
+  @Get()
+  async getAllUsers() {
+    return this.usersService.findAll();
+  }
+
+  @Patch(':id')
+  async updateUserData(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    return this.usersService.update(id, updateUserDto);
+  }
+}
