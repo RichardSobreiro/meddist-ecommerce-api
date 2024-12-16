@@ -1,5 +1,5 @@
 // src/users/dto/update-user.dto.ts
-import { IsEmail, IsString, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
 export class UpdateUserDto {
   @IsEmail()
   email: string;
@@ -7,4 +7,8 @@ export class UpdateUserDto {
   @IsString()
   @MinLength(8)
   password: string;
+
+  @IsNotEmpty()
+  @MinLength(3)
+  username: string;
 }

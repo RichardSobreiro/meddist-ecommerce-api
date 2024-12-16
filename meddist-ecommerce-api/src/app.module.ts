@@ -20,13 +20,17 @@ import { AuthModule } from './auth/auth.module';
     ]),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'ec2-18-230-201-226.sa-east-1.compute.amazonaws.com',
+      host: 'meddist-rds-postgresql-1.ca7cple4hzk3.sa-east-1.rds.amazonaws.com',
       port: 5432,
-      username: 'ecommerceapi',
-      password: '03122024@Rr++',
+      username: 'postgres',
+      password: '02091945!Rr++',
       database: 'ecommercedb',
       entities: [User],
       synchronize: true, // Note: set to false in production
+      ssl: {
+        rejectUnauthorized: false,
+        requestCert: false,
+      },
     }),
     AuthModule,
   ],

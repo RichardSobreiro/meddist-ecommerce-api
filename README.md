@@ -28,12 +28,26 @@ nest g service products
 npx prettier --write "**/*.ts"
 ```
 
+### Update database schema
+
+- Generate the migration with TypeORM CLI
+
+```
+npx typeorm migration:generate -n UsernameNullableMigration
+```
+
+- Run the migration
+
+```
+npx typeorm migration:run
+```
+
 ## EC2 - Dev
 
 - SSH to instance
 
 ```
-ssh -i meddist-dev-ec2micro.pem ec2-user@ec2-18-230-201-226.sa-east-1.compute.amazonaws.com
+ssh -i "meddist-dev-ec2micro.pem" ec2-user@ec2-18-228-16-112.sa-east-1.compute.amazonaws.com
 ```
 
 ### Set up instance
@@ -113,7 +127,7 @@ sudo vim /var/lib/pgsql/data/pg_hba.conf
 - Add the following line to allow connections from your IP address:
 
 ```
-host    all             all             187.20.28.241/32            md5
+host    all             all             187.20.21.126/32            md5
 ```
 
 - Install extensions

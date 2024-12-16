@@ -16,11 +16,16 @@ export class UsersService {
     private userRepository: Repository<User>,
   ) {}
 
-  async create(email: string, password: string): Promise<User> {
+  async create(
+    email: string,
+    password: string,
+    username: string,
+  ): Promise<User> {
     const hashedPassword = await bcrypt.hash(password, 12);
     const newUser = this.userRepository.create({
       email,
       password: hashedPassword,
+      username: username,
     });
 
     try {

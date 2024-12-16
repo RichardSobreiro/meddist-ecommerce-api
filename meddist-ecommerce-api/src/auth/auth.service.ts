@@ -20,7 +20,11 @@ export class AuthService {
   }
 
   async login(user: any) {
-    const payload = { email: user.email, sub: user.userId };
+    const payload = {
+      email: user.email,
+      sub: user.id,
+      username: user.username,
+    };
     const access_token = this.jwtService.sign(payload, {
       secret: process.env.JWT_ACCESS_SECRET || 'access-secret-key',
       expiresIn: '1d', // 15 minutes access token
