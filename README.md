@@ -2,6 +2,10 @@
 
 # meddist-ecommerce-api
 
+## TODOS
+
+1. Security Considerations: Storing tokens in browsers can be risky. Ensure your application has adequate security measures to prevent XSS attacks or token theft.
+
 - Install NestJS CLI globally
 
 ```

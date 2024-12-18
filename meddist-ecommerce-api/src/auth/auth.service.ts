@@ -27,11 +27,11 @@ export class AuthService {
     };
     const access_token = this.jwtService.sign(payload, {
       secret: process.env.JWT_ACCESS_SECRET || 'access-secret-key',
-      expiresIn: '1d', // 15 minutes access token
+      expiresIn: '1m', // 15 minutes access token
     });
     const refresh_token = this.jwtService.sign(payload, {
       secret: process.env.JWT_REFRESH_SECRET || 'refresh-secret-key',
-      expiresIn: '7d', // 7 days refresh token
+      expiresIn: '10m', // 7 days refresh token
     });
     return {
       access_token,
