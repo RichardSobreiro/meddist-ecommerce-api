@@ -7,6 +7,7 @@ import { User } from './users/user.entity';
 import { UsersModule } from './users/users.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { AuthModule } from './auth/auth.module';
+import { Address } from './addresses/address.entity';
 
 @Module({
   imports: [
@@ -25,12 +26,14 @@ import { AuthModule } from './auth/auth.module';
       username: 'postgres',
       password: '02091945!Rr++',
       database: 'ecommercedb',
-      entities: [User],
+      entities: [User, Address],
       synchronize: true, // Note: set to false in production
       ssl: {
         rejectUnauthorized: false,
         requestCert: false,
       },
+      logging: true,
+      logger: 'advanced-console',
     }),
     AuthModule,
   ],

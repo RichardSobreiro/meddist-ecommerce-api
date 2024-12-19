@@ -6,6 +6,8 @@
 
 1. Security Considerations: Storing tokens in browsers can be risky. Ensure your application has adequate security measures to prevent XSS attacks or token theft.
 
+## Create the Project
+
 - Install NestJS CLI globally
 
 ```
@@ -46,108 +48,16 @@ npx typeorm migration:generate -n UsernameNullableMigration
 npx typeorm migration:run
 ```
 
-## EC2 - Dev
+## Generate and Apply Migrations
 
-- SSH to instance
-
-```
-ssh -i "meddist-dev-ec2micro.pem" ec2-user@ec2-18-228-16-112.sa-east-1.compute.amazonaws.com
-```
-
-### Set up instance
-
-#### Install PostgreSQL
-
-- Update your instance:
+- Create a migration name CreateUserAccount
 
 ```
-sudo yum update -y
+npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate src/migrations/CreateUserAccount --dataSource ormconfig.ts
 ```
 
-- Install PostgreSQL:
+- Apply the migration
 
 ```
-sudo dnf install postgresql15.x86_64 postgresql15-server -y
-```
-
-- Set up initial DB
-
-```
-sudo postgresql-setup --initdb
-```
-
-- Start the PostgreSQL service:
-
-```
-sudo systemctl start postgresql
-sudo systemctl enable postgresql
-sudo systemctl status postgresql
-```
-
-- Switch to the PostgreSQL user and create a new database user:
-
-```
-sudo su - postgres
-createuser --interactive --pwprompt
-```
-
-Follow the prompts to create a new user (ecommerceapi).
-
-- Create a database:
-
-```
-createdb -O ecommerceapi ecommercedb
-```
-
-- Log in using the Postgres system account:
-
-```
-su - postgres
-```
-
-- Now, change the admin database password:
-
-```
-psql -c "ALTER USER postgres WITH PASSWORD '03122024@Rr++';"
-exit
-```
-
-#### Configure PostgreSQL for Remote Access
-
-- Edit the PostgreSQL configuration:
-
-```
-sudo vim /var/lib/pgsql/data/postgresql.conf
-```
-
-Change listen_addresses to '\*' to allow connections from any IP.
-
-- Edit the pg_hba.conf file:
-
-```
-sudo vim /var/lib/pgsql/data/pg_hba.conf
-```
-
-- Add the following line to allow connections from your IP address:
-
-```
-host    all             all             187.20.21.126/32            md5
-```
-
-- Install extensions
-
-```
-sudo yum install postgresql15-contrib.x86_64
-```
-
-- Enable "uuid-ossp"
-
-```
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-```
-
-- Restart PostgreSQL:
-
-```
-sudo service postgresql restart
+npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run --dataSource ormconfig.ts
 ```

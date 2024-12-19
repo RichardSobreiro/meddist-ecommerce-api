@@ -18,7 +18,6 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('users')
-@UseGuards(JwtAuthGuard)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -26,28 +25,28 @@ export class UsersController {
   @HttpCode(HttpStatus.CREATED)
   @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
   async register(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(
-      createUserDto.email,
-      createUserDto.password,
-      createUserDto.username,
-    );
+    return this.usersService.create(createUserDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async getUserById(@Param('id') id: string) {
     return this.usersService.findById(id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('email/:email')
   async getUserByEmail(@Param('email') email: string) {
     return this.usersService.findByEmail(email);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   async getAllUsers() {
     return this.usersService.findAll();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async updateUserData(
     @Param('id') id: string,

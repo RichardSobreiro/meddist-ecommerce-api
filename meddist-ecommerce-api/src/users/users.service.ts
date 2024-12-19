@@ -8,37 +8,45 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import * as bcrypt from 'bcryptjs';
+import { CreateUserDto } from './dto/create-user.dto';
+import { Address } from 'src/addresses/address.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    @InjectRepository(Address)
+    private addressRepository: Repository<Address>,
   ) {}
 
-  async create(
-    email: string,
-    password: string,
-    username: string,
-  ): Promise<User> {
-    const hashedPassword = await bcrypt.hash(password, 12);
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    const hashedPassword = await bcrypt.hash(createUserDto.password, 12);
     const newUser = this.userRepository.create({
-      email,
+      ...createUserDto,
       password: hashedPassword,
-      username: username,
     });
 
     try {
       await this.userRepository.save(newUser);
+
+      if (createUserDto.addresses.length) {
+        for (const addressData of createUserDto.addresses) {
+          const newAddress = this.addressRepository.create({
+            ...addressData,
+            user: newUser,
+          });
+          await this.addressRepository.save(newAddress);
+        }
+      }
     } catch (error) {
       if (error.code === '23505') {
-        // PostgreSQL error code for unique violation
         throw new ConflictException('E-mail já existe');
       }
       throw error;
     }
 
-    delete newUser.password; // Ensure sensitive data is not returned
+    delete newUser.password;
     return newUser;
   }
 
