@@ -53,7 +53,7 @@ npx typeorm migration:run
 - Create a migration name CreateUserAccount
 
 ```
-npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate src/migrations/CreateUserAccount --dataSource ormconfig.ts
+npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate src/migrations/UserEmailIsConfirmed --dataSource ormconfig.ts
 ```
 
 - Apply the migration

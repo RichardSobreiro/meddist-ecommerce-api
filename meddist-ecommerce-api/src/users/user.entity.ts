@@ -31,6 +31,9 @@ export class User {
   @Column({ nullable: false })
   companySocialReason: string;
 
+  @Column({ nullable: false })
+  isEmailConfirmed: boolean;
+
   @OneToMany(() => Address, (address) => address.user)
   addresses: Address[];
 }

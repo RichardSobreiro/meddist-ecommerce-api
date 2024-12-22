@@ -28,6 +28,12 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
+  @Post('confirm-email')
+  @HttpCode(HttpStatus.OK)
+  async confirmEmail(@Body() { token }: { token: string }) {
+    return this.usersService.confirmEmail(token);
+  }
+
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   async getUserById(@Param('id') id: string) {
