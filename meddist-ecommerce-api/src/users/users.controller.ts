@@ -34,6 +34,19 @@ export class UsersController {
     return this.usersService.confirmEmail(token);
   }
 
+  @Post('forgot-password')
+  async forgotPassword(@Body('email') email: string): Promise<void> {
+    await this.usersService.requestPasswordReset(email);
+  }
+
+  @Post('reset-password')
+  async resetPassword(
+    @Body('token') token: string,
+    @Body('newPassword') newPassword: string,
+  ): Promise<void> {
+    await this.usersService.resetPassword(token, newPassword);
+  }
+
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   async getUserById(@Param('id') id: string) {

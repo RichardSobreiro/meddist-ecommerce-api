@@ -34,6 +34,12 @@ export class User {
   @Column({ nullable: false })
   isEmailConfirmed: boolean;
 
+  @Column({ nullable: true })
+  resetPasswordToken: string;
+
+  @Column({ type: 'timestamp', nullable: true })
+  resetPasswordExpires: Date;
+
   @OneToMany(() => Address, (address) => address.user)
   addresses: Address[];
 }
